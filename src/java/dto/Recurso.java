@@ -55,6 +55,10 @@ public class Recurso {
     public String getEmail() {
         return Email;
     }
+
+    public void setNombres() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
 }

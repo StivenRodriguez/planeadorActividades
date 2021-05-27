@@ -8,6 +8,7 @@ package logica;
 import database.Conexiones;
 import dto.Actividad;
 import dto.Proyecto;
+import dto.Recurso;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,9 +31,14 @@ public class OperActividad implements Operaciones<Actividad> {
         Connection cActiva = c.conectarse();
         if (cActiva != null) {
             try {
-                String sql = "";
+                String sql = "INSERT INTO Actividad (Nombre, FechaInicio, FechaFin, Estado, IdRecurso, IdProyecto) VALUES (?,?,?,?,?,?)";
                 PreparedStatement ps = cActiva.prepareStatement(sql);
-
+                ps.setString(1, dato.getNombre());
+                ps.setString(2, dato.getFechaInicio());                
+                ps.setString(3, dato.getFechaFin());
+                ps.setString(4, "0");
+                ps.setInt(5, dato.getPersonaEncargada().getId());
+                ps.setInt(6 , dato.getIdProyecto());                
                 int rta = ps.executeUpdate();
                 return rta;
             } catch (SQLException ex) {
@@ -44,45 +50,65 @@ public class OperActividad implements Operaciones<Actividad> {
 
     @Override
     public List<Actividad> consultar() {
-        String sql = "";
-
+        String sql = "SELECT * FROM Actividad";
         Conexiones c = new Conexiones();
         Connection cActiva = c.conectarse();
-        ArrayList lstProyecto = new ArrayList();
+        ArrayList lstActividad = new ArrayList();
         if (cActiva != null) {
             try {
                 Statement stmt = cActiva.createStatement();
                 ResultSet rs = stmt.executeQuery(sql);
                 while (rs.next()) {
-                    Proyecto result = new Proyecto();
-
-                    lstProyecto.add(result);
+                    Actividad result = new Actividad();
+                    result.setId(rs.getInt("id"));
+                    result.setNombre(rs.getString("Nombre"));
+                    result.setFechaInicio(rs.getString("FechaInicio"));
+                    result.setFechaFin(rs.getString("FechaFin"));
+                    int idPersona = rs.getInt("IdPersona");
+                    
+                    OperRecurso operacion = new OperRecurso();
+                    Recurso recAux = new Recurso();
+                    recAux = operacion.consultarId(idPersona).get(0);
+                    result.setPersonaEncargada(recAux);
+                    lstActividad.add(result);
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(OperActividad.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return lstProyecto;
+        return lstActividad;
     }
 
     @Override
-    public Actividad consultar(long id) {
-        String sql = "";
-        Actividad result = new Actividad();
+    public List<Actividad> consultarId(long id) {
+        String sql = "SELECT * FROM Actividad WHERE idProyecto =" + id + "";
         Conexiones c = new Conexiones();
         Connection cActiva = c.conectarse();
+        ArrayList lstActividad = new ArrayList();
         if (cActiva != null) {
             try {
                 Statement stmt = cActiva.createStatement();
                 ResultSet rs = stmt.executeQuery(sql);
                 while (rs.next()) {
-
+                    Actividad result = new Actividad();
+                    result.setId(rs.getInt("id"));
+                    result.setNombre(rs.getString("Nombre"));
+                    result.setFechaInicio(rs.getString("FechaInicio"));
+                    result.setFechaFin(rs.getString("FechaFin"));
+                    result.setIdProyecto(rs.getInt("idProyecto"));
+                    int idPersona = rs.getInt("IdRecurso");
+                    
+                    OperRecurso operacion = new OperRecurso();
+                    Recurso recAux = new Recurso();
+                    recAux = operacion.consultarId(idPersona).get(0);
+                    result.setPersonaEncargada(recAux);
+                    lstActividad.add(result);
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(OperActividad.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return result;
+        return lstActividad;
     }
 
     @Override

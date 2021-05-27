@@ -29,9 +29,12 @@ public class OperRecurso implements Operaciones<Recurso> {
         Connection cActiva = c.conectarse();
         if (cActiva != null) {
             try {
-                String sql = "";
+               String sql = "INSERT INTO Recurso (Nombres, Apellidos, Cargo, Email) VALUES (?,?,?,?)";
                 PreparedStatement ps = cActiva.prepareStatement(sql);
-
+                ps.setString(1, dato.getNombres());
+                ps.setString(2, dato.getApellidos());
+                ps.setString(3, dato.getCargo());
+                ps.setString(4, dato.getEmail()); 
                 int rta = ps.executeUpdate();
                 return rta;
             } catch (SQLException ex) {
@@ -43,7 +46,7 @@ public class OperRecurso implements Operaciones<Recurso> {
 
     @Override
     public List<Recurso> consultar() {
-        String sql = "";
+        String sql = "SELECT * FROM Recurso";
 
         Conexiones c = new Conexiones();
         Connection cActiva = c.conectarse();
@@ -54,7 +57,11 @@ public class OperRecurso implements Operaciones<Recurso> {
                 ResultSet rs = stmt.executeQuery(sql);
                 while (rs.next()) {
                     Recurso result = new Recurso();
-
+                    result.setId(rs.getInt("id"));
+                    result.setNombres(rs.getString("Nombres"));
+                    result.setApellidos(rs.getString("Apellidos"));
+                    result.setCargo(rs.getString("Cargo"));
+                    result.setEmail(rs.getString("Email"));
                     lstRecurso.add(result);
                 }
             } catch (SQLException ex) {
@@ -65,23 +72,29 @@ public class OperRecurso implements Operaciones<Recurso> {
     }
 
     @Override
-    public Recurso consultar(long id) {
-        String sql = "";
-        Recurso result = new Recurso();
+    public List<Recurso> consultarId(long id) {
+        String sql = "SELECT * FROM Recurso WHERE id = " + id + "";
         Conexiones c = new Conexiones();
         Connection cActiva = c.conectarse();
+        ArrayList lstRecurso = new ArrayList();
         if (cActiva != null) {
             try {
                 Statement stmt = cActiva.createStatement();
                 ResultSet rs = stmt.executeQuery(sql);
                 while (rs.next()) {
-
+                    Recurso result = new Recurso();
+                    result.setId(rs.getInt("id"));
+                    result.setNombres(rs.getString("Nombres"));
+                    result.setApellidos(rs.getString("Apellidos"));
+                    result.setCargo(rs.getString("Cargo"));
+                    result.setEmail(rs.getString("Email"));
+                    lstRecurso.add(result);
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(OperRecurso.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return result;
+        return lstRecurso;
     }
 
     @Override

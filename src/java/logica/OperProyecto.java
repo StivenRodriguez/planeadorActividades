@@ -7,6 +7,7 @@ package logica;
 
 import database.Conexiones;
 import dto.Proyecto;
+import dto.Recurso;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,9 +30,13 @@ public class OperProyecto implements Operaciones<Proyecto> {
         Connection cActiva = c.conectarse();
         if (cActiva != null) {
             try {
-                String sql = "";
+                String sql = "INSERT INTO Proyecto (Nombre, Descripcion, FechaInicio, FechaFin, IdPersona) VALUES (?,?,?,?,?)";
                 PreparedStatement ps = cActiva.prepareStatement(sql);
-
+                ps.setString(1, dato.getNombre());
+                ps.setString(2, dato.getDescripcion());
+                ps.setString(3, dato.getFechaInico());
+                ps.setString(4, dato.getFechaFin());
+                ps.setInt(5, dato.getPersonaEncarda().getId());
                 int rta = ps.executeUpdate();
                 return rta;
             } catch (SQLException ex) {
@@ -43,8 +48,39 @@ public class OperProyecto implements Operaciones<Proyecto> {
 
     @Override
     public List<Proyecto> consultar() {
-        String sql = "";
+        String sql = "SELECT * FROM Proyecto";
 
+        Conexiones c = new Conexiones();
+        Connection cActiva = c.conectarse();
+        ArrayList lstProyecto = new ArrayList();
+        if (cActiva != null) {
+            try {
+                Statement stmt = cActiva.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+                while (rs.next()) {
+                    Proyecto result = new Proyecto();
+                    result.setId(rs.getInt("id"));
+                    result.setNombre(rs.getString("Nombre"));
+                    result.setDescripcion(rs.getString("Descripcion"));
+                    result.setFechaFin(rs.getString("FechaFin"));
+                    result.setFechaInico(rs.getString("FechaInicio"));
+                    int idPersona = rs.getInt("IdPersona");
+                    OperRecurso operacion = new OperRecurso();
+                    Recurso recAux = new Recurso();
+                    recAux = operacion.consultarId(idPersona).get(0);
+                    result.setPersonaEncarda(recAux);
+                    lstProyecto.add(result);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(OperProyecto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return lstProyecto;
+    }
+
+    @Override
+    public List<Proyecto> consultarId(long id) {
+        String sql = "SELECT * FROM Proyecto";
         Conexiones c = new Conexiones();
         Connection cActiva = c.conectarse();
         ArrayList lstProyecto = new ArrayList();
@@ -62,26 +98,6 @@ public class OperProyecto implements Operaciones<Proyecto> {
             }
         }
         return lstProyecto;
-    }
-
-    @Override
-    public Proyecto consultar(long id) {
-        String sql = "";
-        Proyecto result = new Proyecto();
-        Conexiones c = new Conexiones();
-        Connection cActiva = c.conectarse();
-        if (cActiva != null) {
-            try {
-                Statement stmt = cActiva.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
-                while (rs.next()) {
-
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(OperProyecto.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return result;
     }
 
     @Override

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui">
+    <html>
+        <h:head>
+            <title>Crear Actividad</title>
+            <h:outputStylesheet library="css" name = "style.css"/>
+        </h:head>
+
+        <h:body id = "principal">  
+            <br/><br/><br/><br/>
+            <h:form>
+                <div class="card">
+                    <p:panel header="Actividad" toggleable="true" toggleSpeed="500"
+                             closeSpeed="500" widgetVar="panel" styleClass="customTitleBar">
+                        <p:panelGrid columns="4"
+                                     id ="project"
+                                     styleClass="companyHeaderGrid" 
+                                     contentStyleClass="ui-fluid"
+                                     columnClasses="p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4, p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4" >
+
+
+                            <p:outputLabel for="@next" value="Proyecto"/>       
+                            <p:selectOneMenu id="idProyecto" value="#{manejadorActividad.idProyecto}"
+                                             panelStyle="width:180px"  var="d"
+                                             filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="Selecione Proyecto" itemValue="" />
+                                <f:selectItems  value="#{manejadorActividad.lstProyecto}" var="p" itemValue="#{p.id}" itemLabel="#{p.nombre}"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="@next"  value="Nombre"/>
+                            <p:inputText id="nombre" required="true" value="#{manejadorActividad.nombre}" />
+
+                            <p:outputLabel for="@next"  value="Fecha Inicio"/>
+                            <p:datePicker required="true" id="fechaInicio" showIcon="true" value="#{manejadorActividad.fechaInicio}" pattern="MM/dd/yyyy"/>
+
+                            <p:outputLabel for="@next" value="Fecha Fin"/>
+                            <p:datePicker required="true" id="fechaFin" showIcon="true" value="#{manejadorActividad.fechaFin}" pattern="MM/dd/yyyy"/>
+
+                            <p:outputLabel for="@next" value="Usuario Encargado"/>                            
+                            <p:selectOneMenu required="true" id="idPersonaEncargada" value="#{manejadorActividad.idPersonaEncargada}"
+                                             panelStyle="width:180px"  var="c"
+                                             filter="true" filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="Selecione Recurso" itemValue="" />
+                                <f:selectItems  value="#{manejadorActividad.lstRecurso}" var="r" itemValue="#{r.id}" itemLabel="#{r.nombres}"/>
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+                        <br/><br/>
+                        <p:linkButton outcome="index" value="Salir"  styleClass="ui-button-secondary sinlinea" style="float:right; margin-right:20px;">
+                            <f:param name="productId" value="10"/>
+                        </p:linkButton>
+                        <p:commandButton value="Guardar" style="float:right;" action="#{manejadorActividad.guardarActividad()}" update="project"  />
+                        <br/><br/><br/>
+                        
+                    </p:panel> 
+
+                </div> 
+            </h:form>
+        </h:body>
+    </html>
+</f:view>
+

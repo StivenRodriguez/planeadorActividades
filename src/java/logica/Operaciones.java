@@ -14,7 +14,9 @@ import java.util.List;
 public interface Operaciones<T> {
     public int insertar(T dato);
     public List<T> consultar();
-    public T consultar(long id);
+    public List<T> consultarId(long id);
     public int actualizar (T dato);
     public int eliminar (int id);
 }
+
+

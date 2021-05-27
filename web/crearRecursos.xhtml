@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui">
+    <html>
+        <h:head>
+            <title>Crear Recursos</title>
+            <h:outputStylesheet library="css" name = "style.css"/>
+
+        </h:head>
+
+        <h:body id = "principal">  
+            <h:form>
+                <br/><br/><br/><br/>
+                <div class="card">
+                    <p:panel header="Recursos" toggleable="true" toggleSpeed="500"
+                             closeSpeed="500" widgetVar="panel" styleClass="customTitleBar">
+
+                        <p:panelGrid columns="4" 
+                                     id ="project"
+                                     styleClass="companyHeaderGrid" 
+                                     contentStyleClass="ui-fluid"
+                                     columnClasses="p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4, p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4" >
+
+                            <p:outputLabel for="@next" value="Nombre" />
+                            <p:inputText id="Nombres"  required="true" value="#{manejadorRecurso.nombres}"/>
+
+                            <p:outputLabel for="@next" value="Apellidos"/>
+                            <p:inputText id="Apellidos" required="true" value="#{manejadorRecurso.apellidos}"/>
+
+                            <p:outputLabel for="@next"  value="email"/>
+                            <p:inputText id="Email" required="true" value="#{manejadorRecurso.email}"/>                                                          
+
+                            <p:outputLabel for="@next" value="Cargo"/>
+                            <p:inputText id="Cargo" required="true" value="#{manejadorRecurso.cargo}" />
+                        </p:panelGrid>
+                        <br/><br/>
+                        <p:linkButton outcome="crearProyecto" value="Salir"  styleClass="ui-button-secondary sinlinea" style="float:right; margin-right:20px;">
+                            <f:param name="productId" value="10"/>
+                        </p:linkButton>
+                        <p:commandButton value="Guardar"  style="float:right;" action="#{manejadorRecurso.guardarRecurso()}" update="project" />
+                        <br/><br/><br/><br/>
+
+                        <p:panel header="Recursos asociados al proyecto" toggleable="true" toggleSpeed="500"
+                                 closeSpeed="500" widgetVar="panel" styleClass="customTitleBar">
+                            <div class="card">
+                                <p:dataTable var="recurso" value="#{manejadorRecurso.consultarRecurso()}" stickyHeader="true" stickyTopAt=".layout-topbar">
+                                    <p:column headerText="Nombre">
+                                        <h:outputText value="#{recurso.nombres}"/>
+                                    </p:column>
+                                    <p:column headerText="Apellidos">
+                                        <h:outputText value="#{recurso.apellidos}"/>
+                                    </p:column>
+                                    <p:column headerText="Email">
+                                        <h:outputText value="#{recurso.email}"/>
+                                    </p:column>
+                                    <p:column headerText="Cargo">
+                                        <h:outputText value="#{recurso.cargo}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </p:panel>
+                    </p:panel>
+
+                </div>    
+
+            </h:form>
+        </h:body>
+    </html>
+</f:view>
+

@@ -14,7 +14,7 @@ import java.sql.SQLException;
  * @author Vinni
  */
 public class Conexiones {
-    private final String URL = "C:/BD/basedatos.db";
+    private final String URL = "C:/BD/BDPlaneador.db";
     
     public Connection conectarse(){
         try {

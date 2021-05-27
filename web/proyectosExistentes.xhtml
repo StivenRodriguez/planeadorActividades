@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui">
+    <html>
+        <h:head>
+            <title>Crear Recursos</title>
+            <h:outputStylesheet library="css" name = "style.css"/>
+
+        </h:head>
+
+        <h:body id = "principal">  
+            <h:form>
+                <br/><br/><br/><br/>
+                <div class="card">
+                    <p:panel header="Actividad" toggleable="true" toggleSpeed="500"
+                             closeSpeed="500" widgetVar="panel" styleClass="customTitleBar">
+                        <p:dataTable var="proyecto" value="#{manejadorProyecto.consultarProyectos()}" stickyHeader="true" stickyTopAt=".layout-topbar">
+
+                            <p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}" />
+                            <p:column headerText="Nombre">
+                                <h:outputText value="#{proyecto.nombre}"/>
+                            </p:column>
+                            <p:column headerText="Descripcion">
+                                <h:outputText value="#{proyecto.descripcion}"/>
+                            </p:column>
+                            <p:column headerText="Fecha Inicio">
+                                <h:outputText value="#{proyecto.fechaInico}"/>
+                            </p:column>
+                            <p:column headerText="Fecha Fin">
+                                <h:outputText value="#{proyecto.fechaFin}"/>
+                            </p:column>
+                            <p:column>
+                                <p:commandButton
+                                    action="#{manejadorProyecto.editarProyecto(proyecto)}" icon="pi pi-pencil"                                    
+                                    />                            
+                            </p:column>
+
+                        </p:dataTable>
+                        <br/><br/> 
+                            <p:linkButton outcome="index" value="Salir"  styleClass="ui-button-secondary sinlinea" style="float:right; margin-right:20px;">
+                                <f:param name="productId" value="10"/>
+                            </p:linkButton>
+                        <br/><br/>
+                    </p:panel>
+                </div>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>
+

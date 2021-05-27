@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui">
+    <html>
+        <h:head>
+            <title>Crear Recursos</title>
+            <h:outputStylesheet library="css" name = "style.css"/>
+        </h:head>
+
+        <h:body id = "principal">  
+
+            <h:form>
+                <br/><br/><br/><br/>
+                <div class="card">
+                    <p:panel header="Proyecto" toggleable="true" toggleSpeed="500"
+                             closeSpeed="500" widgetVar="panel" styleClass="customTitleBar">            
+                        <p:panelGrid columns="4"
+                                     styleClass="companyHeaderGrid" 
+                                     contentStyleClass="ui-fluid"
+                                     columnClasses="p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4, p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4"
+                                     id="project">
+                            <p:outputLabel for="@next" value="Nombre"/>
+                            <p:inputText id="nombre" required="true" value="#{manejadorProyecto.nombre}" />
+
+                            <p:outputLabel for="@next" value="Descripción"/>
+                            <p:inputText id="descripcion" required="true" value="#{manejadorProyecto.descripcion}"/>
+
+                            <p:outputLabel for="@next" value="Fecha Inicio"/>
+                            <p:datePicker id="fechaInicio" required="true" value="#{manejadorProyecto.fechaInicio}" pattern="dd-MMM-yyyy"/>
+
+                            <p:outputLabel for="@next" value="Fecha Fin"/>
+                            <p:calendar  required="true"  id="fechaFin" value="#{manejadorProyecto.fechaFin}" pattern="dd-MM-yyyy"/>
+
+
+                            <p:outputLabel for="@next" value="Usuario Encargado"/>                            
+                            <p:selectOneMenu id="idPersonaEncargada" value="#{manejadorProyecto.idPersonaEncargada}"
+                                             panelStyle="width:180px"  var="c"
+                                             filter="true" filterMatchMode="startsWith" required="true">
+                                <f:selectItem itemLabel="Selecione Recurso" itemValue="" />
+                                <f:selectItems  value="#{manejadorProyecto.lstRecursos}" var="r" itemValue="#{r.id}" itemLabel="#{r.nombres}" />
+                            </p:selectOneMenu>
+                            <p:linkButton outcome="crearRecursos" value="Crear recursos"  styleClass="sinlinea" style="float:right; margin-right:20px;">
+                                <f:param name="crearRecursos" value="10"/>
+                            </p:linkButton>
+                            <h:outputLabel id="msg" value="#{manejadorProyecto.mensaje}" styleClass= 'red' />
+                        </p:panelGrid>
+                        <br/><br/>
+                        <div>
+                            <p:linkButton outcome="index" value="Salir"  styleClass="ui-button-secondary sinlinea" style="float:right; margin-right:20px;">
+                                <f:param name="productId" value="10"/>
+                            </p:linkButton>
+                            <p:commandButton value="Guardar" style="float:right;" 
+                                             action="#{manejadorProyecto.guardarProyecto()}" update="project" />
+                        </div>
+                        <br/><br/><br/><br/>
+                        <p:panel header="Actividades asociadas al proyecto" toggleable="true" toggleSpeed="500"
+                                 closeSpeed="500" widgetVar="panel" styleClass="customTitleBar"> 
+                            <div class="card">
+
+                                <p:dataTable var="actividad" value="#{manejadorProyecto.consultarActividades()}" stickyHeader="true" stickyTopAt=".layout-topbar">
+
+                                    <p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}" />
+                                    <p:column headerText="Nombre">
+                                        <h:outputText value="#{actividad.nombre}"/>
+                                    </p:column>
+                                    <p:column headerText="Fecha Inicio">
+                                        <h:outputText value="#{actividad.fechaInicio}"/>
+                                    </p:column>
+                                    <p:column headerText="Fecha Fin">
+                                        <h:outputText value="#{actividad.fechaFin}"/>
+                                    </p:column>
+                                    <p:column headerText="Estado">
+                                        <h:outputText value="#{actividad.estado}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </p:panel>
+                    </p:panel>
+
+                    <br/>            
+                </div>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>
+

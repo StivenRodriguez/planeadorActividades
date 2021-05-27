@@ -13,8 +13,8 @@ import java.util.List;
  */
 public class Actividad {
     private int Id;
+    private int IdProyecyo;
     private String Nombre;
-    private String Descripcion;
     private String FechaInicio;
     private String FechaFin;
     private int Estado;
@@ -33,12 +33,13 @@ public class Actividad {
         this.Id = Id;
     }
 
+    public void setIdProyecto(int IdProyecyo) {
+        this.IdProyecyo = IdProyecyo;
+    }
+    
+
     public void setNombre(String Nombre) {
         this.Nombre = Nombre;
-    }
-
-    public void setDescripcion(String Descripcion) {
-        this.Descripcion = Descripcion;
     }
 
     public void setFechaInicio(String FechaInicio) {
@@ -61,12 +62,12 @@ public class Actividad {
         return Id;
     }
 
-    public String getNombre() {
-        return Nombre;
+    public int getIdProyecto() {
+        return IdProyecyo;
     }
 
-    public String getDescripcion() {
-        return Descripcion;
+    public String getNombre() {
+        return Nombre;
     }
 
     public String getFechaInicio() {

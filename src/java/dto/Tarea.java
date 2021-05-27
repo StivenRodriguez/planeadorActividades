@@ -11,6 +11,7 @@ package dto;
  */
 public class Tarea {
     private int Id;
+    private int IdActividad;
     private String Descripcion;
     private String FechaInicio;
     private String FechaFin;
@@ -18,6 +19,10 @@ public class Tarea {
 
     public void setId(int Id) {
         this.Id = Id;
+    }
+
+    public void setIdActividad(int IdActividad) {
+        this.IdActividad = IdActividad;
     }
 
     public void setDescripcion(String Descripcion) {
@@ -40,6 +45,10 @@ public class Tarea {
         return Id;
     }
 
+    public int getIdActividad() {
+        return IdActividad;
+    }
+    
     public String getDescripcion() {
         return Descripcion;
     }
